@@ -1,0 +1,57 @@
+graph TB
+    subgraph Internet["External / Internet"]
+        ATK["Threat Actor"]
+        USR["Legitimate User"]
+    end
+
+    subgraph Edge["GCP Edge Layer"]
+        CA["Cloud Armor WAF + DDoS"]
+        LB["Cloud Load Balancer (HTTPS)"]
+    end
+
+    subgraph VPC["production-vpc  10.0.0.0/16"]
+        subgraph DMZ["Public Subnet 10.0.1.0/24"]
+            IAP["IAP / BeyondCorp"]
+        end
+        subgraph APP["App Subnet 10.0.2.0/24"]
+            CR["Cloud Run Services"]
+            GKE["GKE Cluster"]
+        end
+        subgraph DATA["Data Subnet 10.0.3.0/24"]
+            BQ["BigQuery"]
+            GCS["Cloud Storage"]
+            SM["Secret Manager"]
+        end
+        subgraph SEC["Security Subnet 10.0.4.0/24"]
+            IDS["Cloud IDS"]
+            CF["Cloud Functions SOAR"]
+        end
+    end
+
+    subgraph DETECT["Detection Pipeline"]
+        LR["Log Router"]
+        PS["Pub/Sub"]
+        BQ_AUDIT["BigQuery: sentinel_audit"]
+        CHR["Chronicle SIEM"]
+        SCC["Security Command Center"]
+    end
+
+    subgraph SOAR["Autonomous Response"]
+        EVT["Eventarc"]
+        CF_R["CF: revoke-public-access"]
+        CF_D["CF: disable-service-account"]
+    end
+
+    USR --> CA --> LB --> IAP --> CR
+    ATK --> CA
+    CR --> BQ
+    CR --> GCS
+    GKE --> CR
+    CR --> LR
+    LR --> PS
+    LR --> BQ_AUDIT
+    PS --> CHR
+    BQ_AUDIT --> SCC
+    SCC --> EVT
+    EVT --> CF_R
+    EVT --> CF_D

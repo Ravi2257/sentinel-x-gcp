@@ -1,0 +1,50 @@
+{
+  "displayName": "SENTINEL-X Security Operations Overview",
+  "mosaicLayout": {
+    "columns": 12,
+    "tiles": [
+      {
+        "width": 6, "height": 4,
+        "widget": {
+          "title": "Owner/Editor Grants (log-based metric)",
+          "scorecard": {
+            "timeSeriesQuery": {
+              "timeSeriesFilter": {
+                "filter": "metric.type=\"logging.googleapis.com/user/sentinel_iam_owner_grant\""
+              }
+            },
+            "thresholds": [ { "value": 0, "color": "RED", "direction": "ABOVE" } ]
+          }
+        }
+      },
+      {
+        "xPos": 6, "width": 6, "height": 4,
+        "widget": {
+          "title": "Service Account Keys Created",
+          "scorecard": {
+            "timeSeriesQuery": {
+              "timeSeriesFilter": {
+                "filter": "metric.type=\"logging.googleapis.com/user/sentinel_sa_key_created\""
+              }
+            }
+          }
+        }
+      },
+      {
+        "yPos": 4, "width": 12, "height": 4,
+        "widget": {
+          "title": "Failed API Calls (rate)",
+          "xyChart": {
+            "dataSets": [ {
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "filter": "metric.type=\"logging.googleapis.com/user/sentinel_failed_api\""
+                }
+              }
+            } ]
+          }
+        }
+      }
+    ]
+  }
+}

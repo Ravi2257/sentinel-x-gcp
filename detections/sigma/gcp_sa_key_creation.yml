@@ -1,0 +1,28 @@
+title: GCP Service Account Key Creation
+id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+status: stable
+description: Detects creation of service account keys which may indicate persistence
+references:
+  - https://attack.mitre.org/techniques/T1136/003/
+author: sentinel-x
+date: 2026/01/01
+tags:
+  - attack.persistence
+  - attack.t1136.003
+logsource:
+  product: gcp
+  service: gcp.audit
+detection:
+  selection:
+    gcp.audit.method_name: "google.iam.admin.v1.CreateServiceAccountKey"
+  filter_automation:
+    gcp.audit.authentication_info.principal_email|contains:
+      - "@cloudbuild.gserviceaccount.com"
+      - "@cloudservices.gserviceaccount.com"
+  condition: selection and not filter_automation
+falsepositives:
+  - Legitimate CI/CD pipelines using legacy key-based auth (migrate to WIF)
+level: high
+fields:
+  - gcp.audit.authentication_info.principal_email
+  - gcp.audit.resource_name

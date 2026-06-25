@@ -1,0 +1,23 @@
+rule gcp_vm_burst_crypto {
+  meta:
+    author          = "sentinel-x"
+    description     = "Principal creates >5 VMs in under 10 minutes - possible crypto mining"
+    technique       = "T1496"
+    severity        = "HIGH"
+    false_positives = "Legitimate autoscaling/batch job (exclude its SA)"
+    version         = "1.0"
+
+  events:
+    $e.metadata.event_type = "RESOURCE_CREATION"
+    $e.target.resource.resource_type = "VIRTUAL_MACHINE"
+    $e.principal.user.email_addresses = $principal
+
+  match:
+    $principal over 10m
+
+  outcome:
+    $vm_count = count_distinct($e.target.resource.name)
+
+  condition:
+    #e > 5
+}

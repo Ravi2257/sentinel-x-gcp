@@ -1,0 +1,11 @@
+{
+  "_comment": "KNOWN-BAD fixture: D4/YARAL-3 burst rule must fire (6 inserts, same actor, <10m).",
+  "events": [
+    { "methodName": "v1.compute.instances.insert", "principalEmail": "miner@example.com", "name": "vm-1", "timestamp": "2026-06-25T10:00:01Z" },
+    { "methodName": "v1.compute.instances.insert", "principalEmail": "miner@example.com", "name": "vm-2", "timestamp": "2026-06-25T10:00:30Z" },
+    { "methodName": "v1.compute.instances.insert", "principalEmail": "miner@example.com", "name": "vm-3", "timestamp": "2026-06-25T10:01:10Z" },
+    { "methodName": "v1.compute.instances.insert", "principalEmail": "miner@example.com", "name": "vm-4", "timestamp": "2026-06-25T10:02:00Z" },
+    { "methodName": "v1.compute.instances.insert", "principalEmail": "miner@example.com", "name": "vm-5", "timestamp": "2026-06-25T10:03:00Z" },
+    { "methodName": "v1.compute.instances.insert", "principalEmail": "miner@example.com", "name": "vm-6", "timestamp": "2026-06-25T10:04:00Z" }
+  ]
+}

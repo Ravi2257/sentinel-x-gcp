@@ -1,0 +1,34 @@
+# Block ALL json by default, then allow only sanitized samples/dashboards
+*.json
+!sample-logs/*.json
+!dashboards/*.json
+!tests/fixtures/*.json
+
+# Credentials - never commit
+*-key.json
+*_key.json
+credentials.json
+.env
+*.pem
+
+# Terraform
+*.tfstate
+*.tfstate.backup
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+crash.log
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+venv/
+.venv/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+~$*
+.idea/
+.vscode/

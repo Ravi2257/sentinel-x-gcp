@@ -1,0 +1,19 @@
+{
+  "insertId": "sample-public-bucket-001",
+  "logName": "projects/sentinel-x-lab/logs/cloudaudit.googleapis.com%2Fdata_access",
+  "protoPayload": {
+    "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+    "methodName": "storage.setIamPermissions",
+    "authenticationInfo": { "principalEmail": "devops@example.com" },
+    "requestMetadata": { "callerIp": "10.0.2.7" },
+    "resourceName": "projects/_/buckets/financecore-customer-data",
+    "serviceData": {
+      "policyDelta": { "bindingDeltas": [
+        { "action": "ADD", "role": "roles/storage.objectViewer", "member": "allUsers" }
+      ]}
+    }
+  },
+  "resource": { "type": "gcs_bucket", "labels": { "bucket_name": "financecore-customer-data" } },
+  "severity": "NOTICE",
+  "timestamp": "2026-06-25T11:02:00Z"
+}

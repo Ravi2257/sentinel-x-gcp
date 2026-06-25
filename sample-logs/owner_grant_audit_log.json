@@ -1,0 +1,18 @@
+{
+  "insertId": "sample-owner-grant-001",
+  "logName": "projects/sentinel-x-lab/logs/cloudaudit.googleapis.com%2Factivity",
+  "protoPayload": {
+    "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+    "methodName": "SetIamPolicy",
+    "authenticationInfo": { "principalEmail": "attacker@example.com" },
+    "requestMetadata": { "callerIp": "203.0.113.45" },
+    "resourceName": "projects/sentinel-x-lab",
+    "serviceData": {
+      "policyDelta": { "bindingDeltas": [
+        { "action": "ADD", "role": "roles/owner", "member": "serviceAccount:backdoor@sentinel-x-lab.iam.gserviceaccount.com" }
+      ]}
+    }
+  },
+  "severity": "NOTICE",
+  "timestamp": "2026-06-25T10:15:00Z"
+}

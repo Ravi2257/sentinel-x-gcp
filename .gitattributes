@@ -1,0 +1,9 @@
+# Force LF on files that must stay LF (bash scripts break with CRLF)
+*.sh    text eol=lf
+*.py    text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.tf    text eol=lf
+
+# Treat Word docs as binary (no line-ending munging, no diff noise)
+*.docx  binary

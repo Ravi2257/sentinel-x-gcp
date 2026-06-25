@@ -1,0 +1,26 @@
+name: Validate Detections
+
+on:
+  pull_request:
+    paths: ["detections/**", "tools/**", "tests/**"]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml pytest
+      - name: Check YARA-L metadata
+        run: python tools/check_yaral_metadata.py detections/yaral
+      - name: Validate Sigma rules
+        run: python tools/validate_detections.py detections/sigma
+      - name: Check SQL detections have a technique comment
+        run: |
+          for f in detections/bigquery/*.sql; do
+            grep -q "Technique:" "$f" || (echo "Missing technique: $f"; exit 1)
+          done
+      - name: Run rule + detector tests
+        run: pytest -q tests/

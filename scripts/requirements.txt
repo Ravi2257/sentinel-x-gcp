@@ -1,0 +1,10 @@
+google-cloud-asset
+google-cloud-logging
+google-cloud-bigquery
+google-cloud-securitycenter
+google-cloud-iam
+google-cloud-compute
+google-cloud-secret-manager
+google-cloud-storage
+pandas
+tenacity

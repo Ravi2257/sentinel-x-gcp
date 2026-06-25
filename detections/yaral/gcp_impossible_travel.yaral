@@ -1,0 +1,22 @@
+rule gcp_impossible_travel {
+  meta:
+    author          = "sentinel-x"
+    description     = "Same principal authenticates from 2 countries within 10 minutes"
+    technique       = "T1078"
+    severity        = "HIGH"
+    false_positives = "VPN/proxy egress that changes geo (allowlist corp egress)"
+    version         = "1.0"
+
+  events:
+    $e1.metadata.event_type = "USER_LOGIN"
+    $e2.metadata.event_type = "USER_LOGIN"
+    $e1.principal.user.email_addresses = $e2.principal.user.email_addresses
+    $e1.principal.ip != $e2.principal.ip
+    $e1.principal.location.country_or_region != $e2.principal.location.country_or_region
+
+  match:
+    $e1.principal.user.email_addresses over 10m
+
+  condition:
+    $e1 and $e2
+}

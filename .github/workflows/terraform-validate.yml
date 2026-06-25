@@ -1,0 +1,21 @@
+name: Terraform Validate
+
+on:
+  pull_request:
+    paths: ["terraform/**"]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.7.0"
+      - name: Format check
+        run: terraform fmt -check -recursive terraform/
+      - name: Validate
+        run: |
+          cd terraform/
+          terraform init -backend=false
+          terraform validate

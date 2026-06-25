@@ -1,0 +1,18 @@
+rule gcp_owner_role_granted {
+  meta:
+    author          = "sentinel-x"
+    description     = "Owner role granted on a GCP project - immediate investigation"
+    technique       = "T1548"
+    severity        = "CRITICAL"
+    false_positives = "Approved break-glass automation SA (exclude by email)"
+    version         = "1.0"
+
+  events:
+    $e.metadata.event_type = "USER_RESOURCE_UPDATE_CONTENT"
+    $e.metadata.product_name = "Google Cloud IAM"
+    re.regex($e.target.resource.name, `projects/[^/]+`)
+    re.regex($e.about.labels["role_delta"], `roles/owner`)
+
+  condition:
+    $e
+}

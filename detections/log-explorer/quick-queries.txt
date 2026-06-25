@@ -1,0 +1,26 @@
+# SENTINEL-X - Log Explorer quick queries (paste into Logging -> Logs Explorer)
+
+# LEQ-1: Owner/Editor role granted
+resource.type="project"
+protoPayload.methodName="SetIamPolicy"
+protoPayload.serviceData.policyDelta.bindingDeltas.role=("roles/owner" OR "roles/editor")
+protoPayload.serviceData.policyDelta.bindingDeltas.action="ADD"
+
+# LEQ-2: Service account key created
+resource.type="service_account"
+protoPayload.methodName="google.iam.admin.v1.CreateServiceAccountKey"
+severity>=WARNING
+
+# LEQ-3: Log sink deleted (attacker covering tracks)
+resource.type="logging_sink"
+protoPayload.methodName=~"sinks\.delete$"
+severity>=WARNING
+
+# LEQ-4: VPC firewall rule opened to the internet
+resource.type="gce_firewall_rule"
+protoPayload.methodName=~"firewalls\.(insert|patch)"
+protoPayload.request.sourceRanges:"0.0.0.0/0"
+
+# LEQ-5: Secret Manager access (watch frequency per principal)
+resource.type="secretmanager.googleapis.com/Secret"
+protoPayload.methodName="google.cloud.secretmanager.v1.SecretManagerService.AccessSecretVersion"

@@ -1,0 +1,16 @@
+{
+  "_comment": "KNOWN-GOOD fixture: D1/YARAL-1 must NOT fire on this.",
+  "protoPayload": {
+    "methodName": "SetIamPolicy",
+    "authenticationInfo": { "principalEmail": "devops@example.com" },
+    "resourceName": "projects/sentinel-x-lab",
+    "serviceData": {
+      "policyDelta": {
+        "bindingDeltas": [
+          { "action": "ADD", "role": "roles/logging.viewer", "member": "user:analyst@example.com" }
+        ]
+      }
+    }
+  },
+  "resource": { "type": "project", "labels": { "project_id": "sentinel-x-lab" } }
+}

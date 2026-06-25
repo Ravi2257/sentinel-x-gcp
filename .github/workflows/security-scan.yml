@@ -1,0 +1,63 @@
+name: SENTINEL-X Security Scan
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  id-token: write
+  security-events: write
+
+jobs:
+  iac-scan:
+    name: Terraform IaC Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkov IaC Scan
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: terraform/
+          framework: terraform
+          soft_fail: true
+          output_format: sarif
+          output_file_path: checkov.sarif
+      - name: Upload Checkov SARIF
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: checkov.sarif
+
+  container-scan:
+    name: Trivy Config + FS Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Trivy config scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: config
+          scan-ref: terraform/
+          format: sarif
+          output: trivy.sarif
+          severity: CRITICAL,HIGH
+      - name: Upload Trivy SARIF
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: trivy.sarif
+
+  sast:
+    name: SAST - Semgrep
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Semgrep
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: >-
+            p/python
+            p/secrets

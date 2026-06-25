@@ -1,0 +1,13 @@
+{
+  "insertId": "sample-sa-key-001",
+  "logName": "projects/sentinel-x-lab/logs/cloudaudit.googleapis.com%2Factivity",
+  "protoPayload": {
+    "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+    "methodName": "google.iam.admin.v1.CreateServiceAccountKey",
+    "authenticationInfo": { "principalEmail": "attacker@example.com" },
+    "requestMetadata": { "callerIp": "203.0.113.45" },
+    "resourceName": "projects/-/serviceAccounts/backdoor@sentinel-x-lab.iam.gserviceaccount.com"
+  },
+  "severity": "NOTICE",
+  "timestamp": "2026-06-25T10:16:30Z"
+}
